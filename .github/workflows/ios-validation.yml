@@ -1,0 +1,29 @@
+name: iOS foundation validation
+
+on:
+  push:
+    branches: [main, "ios/**"]
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios-validation.yml"
+  pull_request:
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios-validation.yml"
+  workflow_dispatch:
+
+jobs:
+  swift-package:
+    runs-on: macos-15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Build iOS bridge package
+        run: swift build --package-path ios
+
+      - name: Run bridge tests
+        run: swift test --package-path ios
